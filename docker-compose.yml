@@ -1,0 +1,30 @@
+services:
+  # 1. Laravel Web App Container
+  app:
+    image: chialab/php:8.3-apache 
+    container_name: ecommerce_laravel_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/apache/vhost.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - mysql
+
+  # 2. MySQL Database Container
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_ecommerce_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
