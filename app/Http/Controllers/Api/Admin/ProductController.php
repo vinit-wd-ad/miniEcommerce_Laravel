@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::get();
+        $products = Product::with('category:id,name')->get();
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -38,7 +38,7 @@ class ProductController extends Controller
         $request->validate([
             'category_id' => 'required',
             'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:2048',
             'price' => 'required|numeric|min:0',
             'qty' => 'required|integer|min:0'
         ]);

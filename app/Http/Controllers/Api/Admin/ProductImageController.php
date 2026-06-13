@@ -5,23 +5,16 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all images
      */
     public function index()
     {
-        $images = ProductImage::with('products')->get();
-        
-        if($images->isEmpty()){
-            return response()->json([
-                'status' => false,
-                'message' => 'message not found',
-                'data' => [],
-            ]);
-        }
+        $images = ProductImage::with('product')->get();
 
         return response()->json([
             'status' => true,
@@ -30,83 +23,150 @@ class ProductImageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store image
      */
     public function store(Request $request)
     {
         $request->validate([
-            'product_id' => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            'product_id' => 'required|exists:products,id',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'is_primary' => 'nullable|boolean',
         ]);
 
-        $data = $request->all();
+        $data = $request->only([
+            'product_id',
+            'is_primary'
+        ]);
 
-        if($request->hasFile('image')){
-            $data['image'] = $request->file('image')->store('products', 'public');
+        if ($request->hasFile('image')) {
+            $data['image'] = $request
+                ->file('image')
+                ->store('products', 'public');
+        }
+
+        // Only one primary image per product
+        if (!empty($request->is_primary)) {
+            ProductImage::where(
+                'product_id',
+                $request->product_id
+            )->update([
+                'is_primary' => 0
+            ]);
         }
 
         $image = ProductImage::create($data);
 
         return response()->json([
             'status' => true,
-            'messgae' => 'image uploaded',
-            'data' => $image,
+            'message' => 'Image uploaded successfully',
+            'data' => $image
         ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Show single image
      */
     public function show(string $id)
     {
-        $images = ProductImage::with('products')->findOrFail($id);
-        
-        if($images->isEmpty()){
-            return response()->json([
-                'status' => false,
-                'message' => 'message not found',
-                'data' => [],
-            ]);
-        }
+        $image = ProductImage::with('product')
+            ->findOrFail($id);
 
         return response()->json([
             'status' => true,
-            'data' => $images
+            'data' => $image
         ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update image
      */
     public function update(Request $request, string $id)
     {
-        $image = ProductImage::find($id);
+        $image = ProductImage::findOrFail($id);
 
-         $data = $request->all();
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'is_primary' => 'nullable|boolean',
+        ]);
 
-        if($request->hasFile('image')){
-            $data['image'] = $request->file('image')->store('products', 'public');
+        $data = $request->only([
+            'product_id',
+            'is_primary'
+        ]);
+
+        if ($request->hasFile('image')) {
+
+            if (
+                $image->image &&
+                Storage::disk('public')->exists($image->image)
+            ) {
+                Storage::disk('public')->delete($image->image);
+            }
+
+            $data['image'] = $request
+                ->file('image')
+                ->store('products', 'public');
         }
 
-        $image->create($data);
+        // Only one primary image per product
+        if (!empty($request->is_primary)) {
+            ProductImage::where(
+                'product_id',
+                $request->product_id
+            )
+                ->where('id', '!=', $id)
+                ->update([
+                    'is_primary' => 0
+                ]);
+        }
+
+        $image->update($data);
 
         return response()->json([
             'status' => true,
-            'messgae' => 'image updated',
-            'data' => $image,
-        ], 201);
+            'message' => 'Image updated successfully',
+            'data' => $image
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete image
      */
     public function destroy(string $id)
     {
         $image = ProductImage::findOrFail($id);
+
+        if (
+            $image->image &&
+            Storage::disk('public')->exists($image->image)
+        ) {
+            Storage::disk('public')->delete($image->image);
+        }
+
         $image->delete();
 
         return response()->json([
-            'message' => 'image deleted',
+            'status' => true,
+            'message' => 'Image deleted successfully'
+        ]);
+    }
+
+    /**
+     * Product wise images
+     */
+    public function getProductImages($productId)
+    {
+        $images = ProductImage::where(
+            'product_id',
+            $productId
+        )
+            ->orderByDesc('is_primary')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $images
         ]);
     }
 }
