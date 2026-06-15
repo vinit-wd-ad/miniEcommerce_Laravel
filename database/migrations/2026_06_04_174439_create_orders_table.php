@@ -13,6 +13,20 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // ===========================
+            $table->decimal('sub_total', 10, 2)->default(0);
+
+            $table->foreignId('coupon_code_id')
+                ->nullable()
+                ->constrained('coupon_codes')
+                ->nullOnDelete();
+
+            $table->string('coupon_code')->nullable();
+            $table->decimal('coupon_discount', 10, 2)->default(0);
+
+            $table->decimal('shipping_charge', 10, 2)->default(0);
+            $table->decimal('tax_amount', 10, 2)->default(0);
+            // =============================
             $table->decimal('total_amount', 10, 2);
             $table->enum('status', [
                 'pending',
