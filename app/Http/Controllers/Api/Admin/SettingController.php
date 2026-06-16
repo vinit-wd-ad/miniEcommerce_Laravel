@@ -89,4 +89,8 @@ class SettingController extends Controller
             'data' => $updatedSettings
         ]);
     }
+
+    public function store(Request $request){
+        return $this->update($request);
+    }
 }
