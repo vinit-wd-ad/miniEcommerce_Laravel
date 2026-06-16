@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductImageController;
+use App\Http\Controllers\Api\Admin\SettingController;
+use App\Http\Controllers\Api\Admin\SocialLinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +16,10 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::apiResource('/product', ProductController::class);
     Route::apiResource('/product-images', ProductImageController::class);
     Route::get('/products/{product}/images',[ProductImageController::class, 'getProductImages']);
+
+    Route::apiResource('admin', AdminController::class);
+    Route::apiResource('setting', SettingController::class);
+    Route::apiResource('social-links', SocialLinkController::class);
     Route::get('/dashboard', function () {
         return response()->json(['message' => 'Welcome Admin']);
     });
