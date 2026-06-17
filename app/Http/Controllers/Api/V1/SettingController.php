@@ -21,6 +21,13 @@ class SettingController extends Controller
             ]);
         }
 
+        if ($settings->site_logo) {
+            $settings->site_logo_url = asset('storage/' . $settings->site_logo);
+        }
+        if ($settings->site_favicon) {
+            $settings->site_favicon_url = asset('storage/' . $settings->site_favicon);
+        }
+
         return response()->json([
             'status' => true,
             'message' => '',
@@ -32,7 +39,7 @@ class SettingController extends Controller
     {
         $links = SocialLink::where('is_active', true)->orderBy('sort_order', 'asc')->get();
 
-        if($links->isEmpty){
+        if (!$links) {
             return response()->json([
                 'status' => false,
                 'message' => 'No record found',

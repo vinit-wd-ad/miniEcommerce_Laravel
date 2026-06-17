@@ -32,9 +32,9 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::get('/categories', [App\Http\Controllers\Api\V1\CategoryController::class, 'index']);
     Route::get('/categories/{id}', [App\Http\Controllers\Api\V1\CategoryController::class, 'show']);
-    
+
     Route::get('products', [App\Http\Controllers\Api\V1\ProductController::class, 'index']);
-    Route::get('product/{id}', [App\Http\Controllers\Api\V1\ProductController::class, 'show']);
+    Route::get('products/{id}', [App\Http\Controllers\Api\V1\ProductController::class, 'show']);
 
     Route::get('settings', [App\Http\Controllers\Api\V1\SettingController::class, 'index']);
     Route::get('social-links', [App\Http\Controllers\Api\V1\SettingController::class, 'socialLinks']);

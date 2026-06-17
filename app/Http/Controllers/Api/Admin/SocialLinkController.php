@@ -10,11 +10,9 @@ class SocialLinkController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * Admin dashboard ke liye ordered list return karega.
      */
     public function index()
     {
-        // Sabhi links ko sort_order ke mutabik fetch karega
         $socialLinks = SocialLink::orderBy('sort_order', 'asc')->get();
 
         if ($socialLinks->isEmpty()) {
@@ -39,14 +37,13 @@ class SocialLinkController extends Controller
         $request->validate([
             'platform' => 'required|string|max:255',
             'url' => 'required|url|max:255',
-            'icon' => 'nullable|string|max:255', // can be font-awesome class or image path
+            'icon' => 'nullable|string|max:255',
             'is_active' => 'nullable|boolean',
             'sort_order' => 'nullable|integer'
         ]);
 
         $data = $request->all();
 
-        // Boolean explicitly handle karne ke liye
         if ($request->has('is_active')) {
             $data['is_active'] = filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN);
         }
@@ -104,7 +101,7 @@ class SocialLinkController extends Controller
 
         $data = $request->all();
 
-        // Boolean handle karne ke liye (Sometime frontend sends string 'true'/'false')
+        // Sometime frontend sends string 'true'/'false'
         if ($request->has('is_active')) {
             $data['is_active'] = filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN);
         }
