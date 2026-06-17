@@ -15,7 +15,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::apiResource('/category', CategoryController::class);
     Route::apiResource('/product', ProductController::class);
     Route::apiResource('/product-images', ProductImageController::class);
-    Route::get('/products/{product}/images',[ProductImageController::class, 'getProductImages']);
+    Route::get('/products/{product}/images', [ProductImageController::class, 'getProductImages']);
 
     Route::apiResource('admin', AdminController::class);
     Route::apiResource('setting', SettingController::class);
@@ -28,3 +28,8 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::prefix('v1')->group(function () {
+    Route::get('/categories', [App\Http\Controllers\Api\V1\CategoryController::class, 'index']);
+    Route::get('/categories/{id}', [App\Http\Controllers\Api\V1\CategoryController::class, 'show']);
+});
