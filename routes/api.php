@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\Admin\AuthController;
+use App\Http\Controllers\Api\Admin\BannerController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductImageController;
@@ -16,6 +17,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::apiResource('/product', ProductController::class);
     Route::apiResource('/product-images', ProductImageController::class);
     Route::get('/products/{product}/images', [ProductImageController::class, 'getProductImages']);
+    Route::apiResource('/banners', BannerController::class);
 
     Route::apiResource('admin', AdminController::class);
     Route::apiResource('setting', SettingController::class);

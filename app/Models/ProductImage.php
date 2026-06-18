@@ -9,7 +9,8 @@ class ProductImage extends Model
     protected $fillable = [
         'product_id',
         'image',
-        'is_primary'
+        'is_primary',
+        'is_active'
     ];
 
     public function product() // related product

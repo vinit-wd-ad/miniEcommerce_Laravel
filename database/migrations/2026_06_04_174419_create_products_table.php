@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('image')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('qty')->default(0);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

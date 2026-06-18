@@ -75,6 +75,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'is_active' => $request->is_active ?? false
         ]);
 
         return response()->json([

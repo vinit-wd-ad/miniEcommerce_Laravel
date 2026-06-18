@@ -13,7 +13,8 @@ class Product extends Model
         'short_description',
         'image',
         'price',
-        'qty'
+        'qty',
+        'is_active'
     ];
 
     public function category() // related category

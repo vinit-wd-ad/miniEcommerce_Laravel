@@ -35,7 +35,8 @@ class ProductImageController extends Controller
 
         $data = $request->only([
             'product_id',
-            'is_primary'
+            'is_primary',
+            'is_active'
         ]);
 
         if ($request->hasFile('image')) {
