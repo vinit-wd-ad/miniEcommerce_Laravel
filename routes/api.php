@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::apiResource('/product', ProductController::class);
     Route::apiResource('/product-images', ProductImageController::class);
     Route::get('/products/{product}/images', [ProductImageController::class, 'getProductImages']);
+    Route::patch('/product-images/{id}/toggle-status', [ProductImageController::class, 'toggleStatus']);
     Route::apiResource('/banners', BannerController::class);
 
     Route::apiResource('admin', AdminController::class);

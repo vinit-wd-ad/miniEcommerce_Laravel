@@ -170,6 +170,20 @@ class ProductImageController extends Controller
             'data' => $images
         ]);
     }
+
+    /**
+     * Toggle active status of a product image
+     */
+    public function toggleStatus(string $id)
+    {
+        $image = ProductImage::findOrFail($id);
+        $image->is_active = !$image->is_active;
+        $image->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Status updated successfully',
+            'is_active' => $image->is_active
+        ]);
+    }
 }
-
-
