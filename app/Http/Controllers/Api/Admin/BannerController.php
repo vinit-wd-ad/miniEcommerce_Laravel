@@ -29,7 +29,7 @@ class BannerController extends Controller
             'target_url'  => 'nullable|url|max:255',
             'image'       => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'short_order' => 'nullable|integer',
-            'type'        => 'nullable|string|max:100',
+            'type'        => 'nullable||in:hero_banner,offer_banner,sidebar_banner',
             'is_active'   => 'nullable|boolean',
         ]);
 
