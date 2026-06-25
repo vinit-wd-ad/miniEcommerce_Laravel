@@ -33,7 +33,12 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
+    Route::get('banners', [App\Http\Controllers\Api\V1\BannerController::class, 'index']);
+    Route::get('banners/{id}', [App\Http\Controllers\Api\V1\BannerController::class, 'show']);
+    Route::get('banners/{type}/type', [App\Http\Controllers\Api\V1\BannerController::class, 'bannerType']);
+
     Route::get('/categories', [App\Http\Controllers\Api\V1\CategoryController::class, 'index']);
+    Route::get('/categories-products', [App\Http\Controllers\Api\V1\CategoryController::class, 'categoryProduct']);
     Route::get('/categories/{id}', [App\Http\Controllers\Api\V1\CategoryController::class, 'show']);
 
     Route::get('products', [App\Http\Controllers\Api\V1\ProductController::class, 'index']);

@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = ProductCategory::get(); 
+        $categories = ProductCategory::get();
 
         return response()->json([
             'status' => true,
@@ -28,6 +28,16 @@ class CategoryController extends Controller
         return response()->json([
             'status' => true,
             'data' => $category
+        ]);
+    }
+
+    public function categoryProduct()
+    {
+        $categories = ProductCategory::with('products')->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $categories
         ]);
     }
 }

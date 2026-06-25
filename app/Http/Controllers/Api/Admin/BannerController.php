@@ -20,7 +20,7 @@ class BannerController extends Controller
         ]);
     }
 
-    /* Store a new banner */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -56,8 +56,6 @@ class BannerController extends Controller
             'data'    => $banner
         ], 201);
     }
-
-    /* Show a single banner */
     public function show(string $id)
     {
         $banner = Banner::findOrFail($id);
@@ -68,7 +66,6 @@ class BannerController extends Controller
         ]);
     }
 
-    /* Update banner details and handle image replacement */
     public function update(Request $request, string $id)
     {
         $banner = Banner::findOrFail($id);
@@ -93,12 +90,10 @@ class BannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Purani image ko storage se delete karne ke liye
             if ($banner->image && Storage::disk('public')->exists($banner->image)) {
                 Storage::disk('public')->delete($banner->image);
             }
 
-            // Nayi image store karne ke liye
             $data['image'] = $request
                 ->file('image')
                 ->store('banners', 'public');
@@ -113,12 +108,10 @@ class BannerController extends Controller
         ]);
     }
 
-    /* Delete banner and remove file from storage */
     public function destroy(string $id)
     {
         $banner = Banner::findOrFail($id);
 
-        // File system se physical image delete karne ke liye
         if ($banner->image && Storage::disk('public')->exists($banner->image)) {
             Storage::disk('public')->delete($banner->image);
         }
