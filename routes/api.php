@@ -43,6 +43,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('products', [App\Http\Controllers\Api\V1\ProductController::class, 'index']);
     Route::get('products/{id}', [App\Http\Controllers\Api\V1\ProductController::class, 'show']);
+    Route::get('products/{slug}/slug', [App\Http\Controllers\Api\V1\ProductController::class, 'slug']);
+    Route::get('products/{slug}/category', [App\Http\Controllers\Api\V1\ProductController::class, 'categoryProduct']);
 
     Route::get('settings', [App\Http\Controllers\Api\V1\SettingController::class, 'index']);
     Route::get('social-links', [App\Http\Controllers\Api\V1\SettingController::class, 'socialLinks']);
