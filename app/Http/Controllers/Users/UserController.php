@@ -16,7 +16,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // 1. Check if the authenticated account is an Admin
         if (auth()->guard('admin-api')->check()) {
             $users = User::latest()->get();
 
@@ -35,7 +34,6 @@ class UserController extends Controller
             ], 200);
         }
 
-        // 2. If it is a regular User, return ONLY their own record
         $currentUser = $request->user();
 
         if (!$currentUser) {
@@ -48,7 +46,7 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User record fetched successfully',
-            'data' => [$currentUser] // Returned inside array to maintain uniform JSON structure
+            'data' => [$currentUser]
         ], 200);
     }
 
