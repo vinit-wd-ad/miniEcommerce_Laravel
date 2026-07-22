@@ -18,5 +18,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 65002
           script: |
-            cd /home/u625842782/domains/convertfileplus.com/public_html/vinit
-            git pull origin main
+            cd /home/<username>/domains/convertfileplus.com/public_html/vnit
+            git fetch origin
+            git reset --hard origin/main
