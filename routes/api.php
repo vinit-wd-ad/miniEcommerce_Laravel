@@ -8,11 +8,12 @@ use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductImageController;
 use App\Http\Controllers\Api\Admin\SettingController;
 use App\Http\Controllers\Api\Admin\SocialLinkController;
+use App\Http\Controllers\Users\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/admin/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+Route::middleware('auth:admin-api')->prefix('admin')->group(function () {
     Route::apiResource('/category', CategoryController::class);
     Route::apiResource('/product', ProductController::class);
     Route::apiResource('/product-images', ProductImageController::class);
@@ -28,8 +29,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     });
 });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/user/login', [UserController::class, 'login']);
+Route::middleware('auth:user-api,admin-api')->prefix('user')->group(function () {
+    Route::apiResource('/user', UserController::class);
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
