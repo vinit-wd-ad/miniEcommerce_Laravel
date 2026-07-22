@@ -30,9 +30,10 @@ Route::middleware('auth:admin-api')->prefix('admin')->group(function () {
 });
 
 Route::post('/user/login', [UserController::class, 'login']);
+Route::post('/user/new', [UserController::class, 'store']);
 Route::middleware('auth:user-api,admin-api')->prefix('user')->group(function () {
     Route::apiResource('/user', UserController::class);
-})->middleware('auth:sanctum');
+});
 
 Route::prefix('v1')->group(function () {
     Route::get('banners', [App\Http\Controllers\Api\V1\BannerController::class, 'index']);
