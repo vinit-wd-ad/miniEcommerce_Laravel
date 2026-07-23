@@ -51,4 +51,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('settings', [App\Http\Controllers\Api\V1\SettingController::class, 'index']);
     Route::get('social-links', [App\Http\Controllers\Api\V1\SettingController::class, 'socialLinks']);
+
+    Route::post('cart/details', [App\Http\Controllers\Api\V1\CartController::class, 'getCartDetails']);
 });
