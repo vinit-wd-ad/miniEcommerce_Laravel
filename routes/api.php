@@ -30,7 +30,7 @@ Route::middleware('auth:admin-api')->prefix('admin')->group(function () {
 });
 
 Route::post('/user/login', [UserController::class, 'login']);
-Route::post('/user/new', [UserController::class, 'store']);
+Route::post('/user/register', [UserController::class, 'store']);
 Route::middleware('auth:user-api,admin-api')->prefix('user')->group(function () {
     Route::apiResource('/user', UserController::class);
 });
