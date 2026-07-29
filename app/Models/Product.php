@@ -22,6 +22,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
+    public function brand() // related brand
+    {
+        return $this->belongsTo(Brand::class, 'category_id');
+    }
+
     public function images() // multiple images
     {
         return $this->hasMany(ProductImage::class, 'product_id');
