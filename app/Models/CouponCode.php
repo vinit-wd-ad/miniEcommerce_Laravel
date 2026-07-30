@@ -21,4 +21,9 @@ class CouponCode extends Model
         'is_active',
         'short_order',
     ];
+
+    public function order() 
+    {
+        return $this->hasMany(Order::class, 'coupon_code_id');
+    }
 }
